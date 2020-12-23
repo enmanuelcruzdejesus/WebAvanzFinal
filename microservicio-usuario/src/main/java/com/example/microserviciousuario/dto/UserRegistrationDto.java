@@ -8,6 +8,9 @@ public class UserRegistrationDto {
     String lastName;
     String email;
     String password;
+    String role;
+    
+    
 
     public UserRegistrationDto(){}
 
@@ -51,6 +54,8 @@ public class UserRegistrationDto {
     public void setPassword(String password) {
         this.password = password;
     }
-
+    
+    public String getRole(){return role;}
+    public void setRole(String value){ this.role = value;}
 
 }

@@ -20,10 +20,16 @@ public class UserRegistrationController {
     @Autowired
     private UserService userService;
 
+
+
+
+
     @ModelAttribute("user")
     public UserRegistrationDto userRegistrationDto() {
         return new UserRegistrationDto();
     }
+
+
 
     @GetMapping
     public String showRegistrationForm(Model model) {

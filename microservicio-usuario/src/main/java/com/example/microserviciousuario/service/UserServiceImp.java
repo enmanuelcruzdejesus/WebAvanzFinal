@@ -3,6 +3,7 @@ package com.example.microserviciousuario.service;
 import com.example.microserviciousuario.dto.UserRegistrationDto;
 import com.example.microserviciousuario.entity.Role;
 import com.example.microserviciousuario.entity.User;
+import com.example.microserviciousuario.entity.UsersRoles;
 import com.example.microserviciousuario.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,7 +13,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -21,6 +21,12 @@ public class UserServiceImp  implements  UserService{
 
     @Autowired
     UserRepo repo;
+
+    @Autowired
+    RoleService roleService;
+
+    @Autowired
+    UsersRolesService userRolesService;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -36,8 +42,26 @@ public class UserServiceImp  implements  UserService{
         user.setLastName(entity.getLastName());
         user.setEmail(entity.getEmail());
         user.setPassword(passwordEncoder.encode(entity.getPassword()));
-        user.setRoles(Arrays.asList(new Role("ROLE_USER")));
-        return repo.save(user);
+        System.out.println("SELECTED ROLE = "+entity.getRole());
+        User result = repo.save(user);
+
+        //getting role
+
+        Role r = roleService.findByName(entity.getRole());
+        if(r!= null){
+
+            UsersRoles usrRoles = new UsersRoles();
+            usrRoles.setUser_id(result.getId());
+            usrRoles.setRole_id(r.getId());
+
+            userRolesService.save(usrRoles);
+
+        }
+
+
+
+
+        return user;
 
     }
 
