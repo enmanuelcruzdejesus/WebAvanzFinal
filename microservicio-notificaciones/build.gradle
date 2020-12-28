@@ -25,6 +25,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+	compile("org.springframework.boot:spring-boot-starter-mail")
+// https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-ses
+	compile group: 'com.amazonaws', name: 'aws-java-sdk-ses', version: '1.9.16'
 	runtimeOnly 'com.h2database:h2'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
