@@ -1,5 +1,6 @@
 package com.example.microservicionotificaciones.services;
 
+import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
@@ -19,6 +20,8 @@ import java.io.File;
 @Service
 public class NotificationService {
     private JavaMailSender sender;
+    
+
 
     @Autowired
     public NotificationService(JavaMailSender sender){
@@ -43,7 +46,7 @@ public class NotificationService {
             @Override
             public void prepare(MimeMessage mimeMessage) throws Exception {
 
-
+                
 
                 mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
                 mimeMessage.setFrom(new InternetAddress(from));
@@ -73,10 +76,12 @@ public class NotificationService {
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
+      
         helper.setSubject(subject);
         helper.setText(body);
         helper.setTo(to);
         helper.setFrom(from);
+        
 
        // helper.addAttachment(fileName, new ClassPathResource(fileToAttach));
         helper.addAttachment(fileName,new File(fileToAttach));

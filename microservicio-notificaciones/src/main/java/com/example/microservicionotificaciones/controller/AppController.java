@@ -1,10 +1,13 @@
 package com.example.microservicionotificaciones.controller;
 
+import com.example.microservicionotificaciones.entity.Mail;
 import com.example.microservicionotificaciones.entity.ResponseMessage;
 import com.example.microservicionotificaciones.services.FilesStorageService;
 import com.example.microservicionotificaciones.services.NotificationService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,12 +23,19 @@ public class AppController {
     @Autowired
     FilesStorageService storageService;
 
-    @PostMapping("/sentEmailWithAttachment/{email}")
-    public ResponseEntity<ResponseMessage> sentEmailWithAttachment(@PathVariable String email, @RequestParam("file") MultipartFile file) {
+    @PostMapping(value = "/sentEmailWithAttachment", consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
+    public ResponseEntity<ResponseMessage> sentEmailWithAttachment(@RequestParam("mail") String mail, @RequestParam("file") MultipartFile file) {
         String message = "";
         try {
+            ObjectMapper mapper = new ObjectMapper();
+            Mail mailObj = mapper.readValue(mail, Mail.class);
+            
+            storageService.deleteAll();
+            storageService.init();
+            
             storageService.save(file);
-            service.sendSimpleMessage(email,"enmanuelcruzdejesus@gmail.com","Payment","Payment from Ecommerce","./uploads/payment.pdf","payment.pdf");
+            
+            service.sendSimpleMessage(mailObj.getTo(),mailObj.getFrom(),mailObj.getSubject(),mailObj.getBody(),"./uploads/payment.pdf","payment.pdf");
 
             message = "Uploaded the file successfully: " + file.getOriginalFilename();
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
