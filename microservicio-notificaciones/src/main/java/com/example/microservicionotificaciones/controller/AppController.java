@@ -20,11 +20,12 @@ public class AppController {
     @Autowired
     FilesStorageService storageService;
 
-    @PostMapping("/upload")
-    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
+    @PostMapping("/sentEmailWithAttachment/{email}")
+    public ResponseEntity<ResponseMessage> sentEmailWithAttachment(@PathVariable String email, @RequestParam("file") MultipartFile file) {
         String message = "";
         try {
             storageService.save(file);
+            service.sendSimpleMessage(email,"enmanuelcruzdejesus@gmail.com","Payment","Payment from Ecommerce","./uploads/payment.pdf","payment.pdf");
 
             message = "Uploaded the file successfully: " + file.getOriginalFilename();
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
@@ -42,11 +43,14 @@ public class AppController {
         
     }
 
-    @GetMapping("/sentEmailWithAttachment")
-    public String sentEmailWithAttachment() throws MessagingException {
-        service.sendSimpleMessage("enmanuelcruzdejesus@gmail.com","enmanuelcruzdejesus@gmail.com","Payment","Payment from Ecommerce","./uploads/payment.pdf","payment.pdf");
-      //  service.sendMailWithAttachment("enmanuelcruzdejesus@gmail.com","enmanuelcruzdejesus@gmail.com","Payment","Payment from Ecommerce","/Users/enmanuelcruz/Desktop/webavanzfinal/microservicio-notificaciones/payment.pdf","payment.pdf");
-        return "email sended";
-    }
+//    @GetMapping("/sentEmailWithAttachment")
+//    public String sentEmailWithAttachment() throws MessagingException {
+//
+//
+//
+//        service.sendSimpleMessage("enmanuelcruzdejesus@gmail.com","enmanuelcruzdejesus@gmail.com","Payment","Payment from Ecommerce","./uploads/payment.pdf","payment.pdf");
+//      //  service.sendMailWithAttachment("enmanuelcruzdejesus@gmail.com","enmanuelcruzdejesus@gmail.com","Payment","Payment from Ecommerce","/Users/enmanuelcruz/Desktop/webavanzfinal/microservicio-notificaciones/payment.pdf","payment.pdf");
+//        return "email sended";
+//    }
  
 }
