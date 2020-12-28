@@ -1,7 +1,9 @@
 package com.example.microserviciocompras.service;
 
 import com.example.microserviciocompras.entity.Order;
+import com.example.microserviciocompras.entity.Payment;
 import com.example.microserviciocompras.repo.OrderRepo;
+import com.example.microserviciocompras.repo.PaymentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,25 +11,25 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class OrderService {
-
+public class PaymentService {
     @Autowired
-    OrderRepo repo;
+    PaymentRepo repo;
 
 
-    public List<Order> getAll(){
+    public List<Payment> getAll(){
         return  repo.findAll();
     }
 
 
-    public Optional<Order> getById(Integer id){
+
+
+    public Optional<Payment> getById(Integer id){
         return repo.findById(id);
     }
 
-    public Order save(Order p){
+    public Payment save(Payment p){
 
         return repo.save(p);
     }
-
 
 }

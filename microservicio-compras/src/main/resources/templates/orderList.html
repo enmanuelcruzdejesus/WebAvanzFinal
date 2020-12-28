@@ -20,19 +20,19 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="order : ${orders}">
-        <td th:text="${order.id}">id</td>
-        <td th:text="${order.invoice_id}">invoice_id</td>
-        <td th:text="${order.payer_email}">payer_email</td>
-        <td th:text="${order.item_name}">item_name</td>
-        <td th:text="${order.payment_gross}">payment_gross</td>
+    <tr th:each="payment : ${payments}">
+        <td th:text="${payment.id}">id</td>
+        <td th:text="${payment.invoice_id}">invoice_id</td>
+        <td th:text="${payment.payer_email}">payer_email</td>
+        <td th:text="${payment.item_name}">item_name</td>
+        <td th:text="${payment.payment_gross}">payment_gross</td>
         <td>Ver detalle</td>
     </tr>
     </tbody>
 </table>
 
 <!-- incluyendo la parte de javascript del template.        -->
-<div th:replace="plantilla.html::javascript">
+<div th:replace="template.html::javascript">
 
 </div>
 </body>

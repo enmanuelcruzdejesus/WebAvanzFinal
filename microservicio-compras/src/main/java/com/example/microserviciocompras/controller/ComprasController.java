@@ -2,13 +2,19 @@ package com.example.microserviciocompras.controller;
 
 import com.example.microserviciocompras.entity.AppSetting;
 import com.example.microserviciocompras.entity.Order;
+import com.example.microserviciocompras.entity.Payment;
 import com.example.microserviciocompras.service.AppSettingService;
 import com.example.microserviciocompras.service.OrderService;
+import com.example.microserviciocompras.service.PaymentService;
+import com.example.microserviciocompras.service.ReportService;
+import com.netflix.discovery.converters.Auto;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +28,11 @@ public class ComprasController {
     OrderService orderService;
     @Autowired
     AppSettingService appSettingService;
+    @Autowired
+    ReportService reportService;
+
+    @Autowired
+    PaymentService paymentService;
 
     @GetMapping("/")
     public String index(){
@@ -36,7 +47,7 @@ public class ComprasController {
 
     @PostMapping(path = "/processPaymentPaypal")
     public String processPaymentPaypal(Model model, @RequestParam Map<String,String> params){
-        Order order = new Order();
+        Payment order = new Payment();
         order.setInvoice_id(params.get("invoice"));
         order.setTransaction_id(params.get("txn_id"));
         order.setItem_name(params.get("item_name"));
@@ -58,16 +69,24 @@ public class ComprasController {
         order.setAddress_state(params.get("address_state"));
         order.setAddress_name(params.get("address_name"));
 
-        orderService.save(order);
+        paymentService.save(order);
 
         return "redirect:/orderList";
     }
 
     @GetMapping("/orderList")
     public String orderList(Model model){
-        List<Order> orders = orderService.getAll();
-        model.addAttribute("orders", orders);
+        List<Payment> payments = paymentService.getAll();
+        model.addAttribute("payments", payments);
         return "orderList";
+    }
+
+    @GetMapping("/getReport/{invoice}")
+    public String getReport(@PathVariable String invoice) throws FileNotFoundException, JRException {
+
+         this.reportService.exportReport(invoice,"pdf");
+         return "reportHtml";
+
     }
 
 

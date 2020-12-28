@@ -5,10 +5,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
-@Table(name="order")
-public class Order {
+@Table(name = "payment")
+public class Payment {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String transaction_id;
     private String invoice_id;
@@ -26,8 +27,6 @@ public class Order {
     private BigDecimal payment_fee;
     private BigDecimal shipping;
     private String status;
-
-    public Order(){}
 
     public int getId() {
         return id;
@@ -164,9 +163,8 @@ public class Order {
     public void setStatus(String status) {
         this.status = status;
     }
-
-
-
+    
+    public Payment(){}
 
 
 }
