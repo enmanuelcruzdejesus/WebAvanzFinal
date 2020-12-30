@@ -19,6 +19,8 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImp  implements  UserService{
 
+    User currentUser;
+    
     @Autowired
     UserRepo repo;
 
@@ -33,7 +35,10 @@ public class UserServiceImp  implements  UserService{
 
     public UserServiceImp(UserRepo repo){
         this.repo   = repo;
+        this.currentUser = new User();
     }
+    
+    public User getCurrentUser(){return this.currentUser;}
 
     @Override
     public User save(UserRegistrationDto entity) {
@@ -76,6 +81,8 @@ public class UserServiceImp  implements  UserService{
         if (user == null){
             throw new UsernameNotFoundException("Invalid username or password.");
         }
+        
+        this.currentUser = user;
         return new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(),
                 mapRolesToAuthorities(user.getRoles()));
 
