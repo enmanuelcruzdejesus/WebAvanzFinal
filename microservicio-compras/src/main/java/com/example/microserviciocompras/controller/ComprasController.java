@@ -43,12 +43,13 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/compras")
 public class ComprasController {
 
 
     @Autowired
     AppSettingService appSettingService;
+
     @Autowired
     ReportService reportService;
 
