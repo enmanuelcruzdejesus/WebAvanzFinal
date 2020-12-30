@@ -4,6 +4,7 @@ import com.example.microservicionotificaciones.entity.Mail;
 import com.example.microservicionotificaciones.entity.ResponseMessage;
 import com.example.microservicionotificaciones.services.FilesStorageService;
 import com.example.microservicionotificaciones.services.NotificationService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,20 +46,18 @@ public class AppController {
         }
     }
 
-    @PostMapping("/sendEmail")
-    public String postEmail(@RequestBody Mail mail){
-        service.sendNotification(mail.getTo(),mail.getFrom(),mail.getSubject(),mail.getBody());
+    @PostMapping(value = "/sentMail",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String postEmail(@RequestParam("mail") String mail) throws JsonProcessingException {
+
+        ObjectMapper mapper = new ObjectMapper();
+        Mail mailObj = mapper.readValue(mail, Mail.class);
+        
+        service.sendNotification(mailObj.getTo(),mailObj.getFrom(),mailObj.getSubject(),mailObj.getBody());
 
         return "email send";
     }
     
-    @GetMapping("/sentEmail/{email}")
-    public String sentEmail(@PathVariable String email){
-        
-        service.sendNotification(email,"enmanuelcruzdejesus@gmail.com","Sending email test","THIS IS A TEST");
-        return "email send";
-        
-    }
+
 
 
  
