@@ -44,6 +44,13 @@ public class AppController {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
         }
     }
+
+    @PostMapping("/sendEmail")
+    public String postEmail(@RequestBody Mail mail){
+        service.sendNotification(mail.getTo(),mail.getFrom(),mail.getSubject(),mail.getBody());
+
+        return "email send";
+    }
     
     @GetMapping("/sentEmail/{email}")
     public String sentEmail(@PathVariable String email){
@@ -53,14 +60,6 @@ public class AppController {
         
     }
 
-//    @GetMapping("/sentEmailWithAttachment")
-//    public String sentEmailWithAttachment() throws MessagingException {
-//
-//
-//
-//        service.sendSimpleMessage("enmanuelcruzdejesus@gmail.com","enmanuelcruzdejesus@gmail.com","Payment","Payment from Ecommerce","./uploads/payment.pdf","payment.pdf");
-//      //  service.sendMailWithAttachment("enmanuelcruzdejesus@gmail.com","enmanuelcruzdejesus@gmail.com","Payment","Payment from Ecommerce","/Users/enmanuelcruz/Desktop/webavanzfinal/microservicio-notificaciones/payment.pdf","payment.pdf");
-//        return "email sended";
-//    }
+
  
 }
