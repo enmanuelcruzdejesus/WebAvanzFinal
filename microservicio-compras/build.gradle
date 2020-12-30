@@ -32,6 +32,9 @@ dependencies {
 
 	implementation 'net.sf.jasperreports:jasperreports:6.9.0'
 
+	implementation 'org.apache.httpcomponents:httpclient:4.5'
+	implementation 'org.apache.httpcomponents:httpmime:4.5'
+	implementation 'org.asynchttpclient:async-http-client:2.2.0'
 	runtimeOnly 'mysql:mysql-connector-java'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'

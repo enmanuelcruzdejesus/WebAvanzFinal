@@ -1,8 +1,7 @@
 package com.example.microserviciocompras.service;
 
-import com.example.microserviciocompras.entity.Order;
+
 import com.example.microserviciocompras.entity.Payment;
-import com.example.microserviciocompras.repo.OrderRepo;
 import com.example.microserviciocompras.repo.PaymentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

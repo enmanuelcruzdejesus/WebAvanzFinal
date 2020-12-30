@@ -1,13 +1,8 @@
 package com.example.microserviciocompras.service;
 
-import com.example.microserviciocompras.entity.AppSetting;
-import com.example.microserviciocompras.entity.Order;
 import com.example.microserviciocompras.entity.Payment;
-import com.netflix.discovery.converters.Auto;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import org.exolab.castor.mapping.xml.Sql;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -34,13 +29,14 @@ public class ReportService {
 
     }
 
-    public String exportReport(String invoiceId, String report) throws FileNotFoundException, JRException {
+    public String exportReport(Integer paymentId, String report) throws FileNotFoundException, JRException {
      //   List<Order> orders = this.service.getAll();
     //    List<AppSetting> setting = this.appSettingService.getAll();
         
 //       Payment p = this.paymentService.getById(1);
-       Integer i  =  Integer.parseInt(invoiceId);
-       Payment payment =  this.paymentService.getById(i).get();
+//       Integer i  =  Integer.parseInt(invoiceId);
+       Payment payment =  this.paymentService.getById(paymentId).get();
+       System.out.println("PAYMENT ID = "+payment.getId()+" ORDERDATE = "+payment.getOrder_date());
 
        // load and compile
         File file = ResourceUtils.getFile("classpath:payment.jrxml");
