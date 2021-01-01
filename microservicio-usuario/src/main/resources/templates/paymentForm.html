@@ -5,7 +5,8 @@
 </head>
 <body class="container">
 
-<h1 class="page-header">Formulario de Compra - Paypal</h1>
+<!--<h1 class="page-header"></h1>-->
+<h2>Shopping Cart</h2>
 
 <form role="form" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
 
@@ -21,28 +22,28 @@
     <input type="hidden" name="return" value="http://localhost:8080/microservicio-usuario/processPaymentPaypal">
     <input type="hidden" name="cancel_return" value="http://localhost:8080/">
 
-    <div class="form-group">
-        <label for="invoice"># Compra:</label>
-        <input type="text" class="form-control" id="invoice" name="invoice" placeholder="FA1234" required="required">
+    <div class="form-group" >
+        <label for="invoice">INVOICE:</label>
+        <input type="text"  th:value="${invoice_id}" class="form-control" id="invoice" name="invoice" placeholder="FA1234" required="required" readonly>
     </div>
     <div class="form-group">
-        <label for="item_name">Título de Compra:</label>
-        <input type="text" class="form-control" id="item_name" name="item_name" placeholder="Nombre descriptivo" required="required">
+        <label for="item_name">Item Name:</label>
+        <input type="text" th:value="${item_name}" class="form-control" id="item_name" name="item_name" placeholder="Nombre descriptivo" required="required" readonly>
     </div>
-    <div class="form-group">
-        <label for="amount">Monto Total:</label>
-        <input type="number" class="form-control" id="amount" name="amount" placeholder="Monto de la compra" required="required">
+    <div class="form-group" >
+        <label for="amount">Total:</label>
+        <input type="number" th:value="${total}" class="form-control" id="amount" name="amount" placeholder="Monto de la compra" required="required" readonly>
     </div>
 
     <table class="table table-hover">
         <thead>
-        <tr>
-            <th colspan="3" style="text-align: center">Shopping Cart</th>
-        </tr>
+<!--        <tr>-->
+<!--            <th colspan="3" style="text-align: center">Shopping Cart</th>-->
+<!--        </tr>-->
         <tr>
             <th>ID</th>
             <th>Item</th>
-            <th>US$</th>
+            <th>Valor</th>
         </tr>
         </thead>
         <tbody>
@@ -60,7 +61,7 @@
         <tfoot>
         <th></th>
         <th></th>
-        <th>XXX</th>
+        <th  th:text="${total}" ></th>
         </tfoot>
     </table>
 

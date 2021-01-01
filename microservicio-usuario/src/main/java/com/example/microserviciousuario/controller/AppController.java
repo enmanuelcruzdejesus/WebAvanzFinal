@@ -41,8 +41,11 @@ import java.util.logging.Logger;
 @Controller("/")
 public class AppController {
 
+    Double total = new Double(0);
+
     List<Product> cartItems =new ArrayList<>();
 
+    Payment currentPayment = new Payment();
 
     @Autowired
     UserService userService;
@@ -77,6 +80,7 @@ public class AppController {
             Product item = products.get(i);
             if(item.getPid() == productId){
                 this.cartItems.add(item);
+                this.total += item.getPrice();
             }
         }
         System.out.println("PRODUCT = "+productId+" added in cart");
@@ -85,8 +89,21 @@ public class AppController {
 
     @GetMapping(path = "/paymentForm")
     public String formularioPago(Model model){
-        AppSetting app ;
+
+        String item_name = "";
+        for(int i =0; i < this.cartItems.size(); i++){
+            Product item = this.cartItems.get(i);
+            if(i >0)
+              item_name = item_name+","+item.getProductName();
+            else
+                item_name = item.getProductName();
+        }
+
+        Integer invoice_id = this.paymentService.getPaymentSeq();
+        model.addAttribute("invoice_id","FA"+invoice_id.toString());
+        model.addAttribute("item_name",item_name);
         model.addAttribute("cuentaNegocio",appSettingService.getById(1).get().getValue());
+        model.addAttribute("total",this.total);
         model.addAttribute("cartItems",this.cartItems);
         return "paymentForm";
     }
@@ -119,6 +136,8 @@ public class AppController {
         String result = this.paymentService.processPayment(payment);
         System.out.println("Payment response = "+result);
 
+        //cleaning shopping cart
+        this.clean();
 
         return new RedirectView("http://localhost:8080/microservicio-usuario/payments");
     }
@@ -143,14 +162,20 @@ public class AppController {
 
     @GetMapping("/logout")
     public String logout(){
-        this.cartItems = null;
-        this.cartItems = new ArrayList<>();
+          this.clean();
         return "logout";
     }
-
 
     @GetMapping("/user")
     public String userIndex() {
         return "user/index";
+    }
+
+
+    void clean(){
+        this.cartItems = null;
+        this.cartItems = new ArrayList<>();
+        this.total  = new Double(0);
+
     }
 }

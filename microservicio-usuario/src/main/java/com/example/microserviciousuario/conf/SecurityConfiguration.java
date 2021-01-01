@@ -28,11 +28,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/processPaymentPaypal/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/payments/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/paymentForm**").permitAll()
                 .antMatchers(HttpMethod.GET,   "/addToCart/**").permitAll()
                 .antMatchers(HttpMethod.GET,   "/logout/**").permitAll()
                 .antMatchers(
                         "/registration**",
-                        "/paymentForm**",
                         "/js/**",
                         "/css/**",
                         "/img/**",

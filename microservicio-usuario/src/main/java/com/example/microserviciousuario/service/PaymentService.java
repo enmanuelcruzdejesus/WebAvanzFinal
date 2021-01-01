@@ -39,7 +39,13 @@ public class PaymentService {
         System.out.println(result);
         return result;
     }
-
+    
+    public Integer getPaymentSeq(){
+     
+        String result = restService.get("/getPaymentSeq");
+        System.out.println("PAYMENT ID = "+result);
+        return Integer.parseInt(result);
+    }
 
 
 
