@@ -141,6 +141,12 @@ public class AppController {
         return "login";
     }
 
+    @GetMapping("/logout")
+    public String logout(){
+        this.cartItems = null;
+        this.cartItems = new ArrayList<>();
+        return "logout";
+    }
 
 
     @GetMapping("/user")
