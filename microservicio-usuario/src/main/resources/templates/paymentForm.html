@@ -1,10 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template.html::head">
+    <title>PaymentForm</title>
 </head>
-<body>
-$END$
+<body class="container">
+
+<h1 class="page-header">Formulario de Compra - Paypal</h1>
+
+<form role="form" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+
+    <input type="hidden" name="cmd" value="_xclick">
+    <input type="hidden" name="business" th:value="${cuentaNegocio}" value="....">
+    <input type="hidden" name="currency_code" value="USD">
+
+    <!-- Para uso general, tienen 256 caractares para utilizar -->
+    <input type="hidden" name="custom" value="{'param1': 'valor1', 'param2' : 'valor2'}">
+
+    <input type="hidden" name="cbt" value="Completar proceso de Compra"> <!-- Información para mostrar-->
+    <input type="hidden" name="rm" value="2"> <!-- Indicando que haga un redirect por el metodo POST -->
+    <input type="hidden" name="return" value="http://localhost:8080/microservicio-usuario/processPaymentPaypal">
+    <input type="hidden" name="cancel_return" value="http://localhost:8080/">
+
+    <div class="form-group">
+        <label for="invoice"># Compra:</label>
+        <input type="text" class="form-control" id="invoice" name="invoice" placeholder="FA1234" required="required">
+    </div>
+    <div class="form-group">
+        <label for="item_name">Título de Compra:</label>
+        <input type="text" class="form-control" id="item_name" name="item_name" placeholder="Nombre descriptivo" required="required">
+    </div>
+    <div class="form-group">
+        <label for="amount">Monto Total:</label>
+        <input type="number" class="form-control" id="amount" name="amount" placeholder="Monto de la compra" required="required">
+    </div>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th colspan="3" style="text-align: center">Shopping Cart</th>
+        </tr>
+        <tr>
+            <th>ID</th>
+            <th>Item</th>
+            <th>US$</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr  th:each="product :${cartItems}">
+            <td th:text="${product.pid}"></td>
+            <td th:text="${product.productName}"></td>
+            <td th:text="${product.price}"></td>
+        </tr>
+<!--        <tr>-->
+<!--            <td>2</td>-->
+<!--            <td>Items #2</td>-->
+<!--            <td>XX</td>-->
+<!--        </tr>-->
+        </tbody>
+        <tfoot>
+        <th></th>
+        <th></th>
+        <th>XXX</th>
+        </tfoot>
+    </table>
+
+    <button type="submit" class="btn btn-primary">Check out </button>
+</form>
+
+<!-- incluyendo la parte de javascript del template.        -->
+<div th:replace="template.html::javascript">
+
+</div>
 </body>
 </html>

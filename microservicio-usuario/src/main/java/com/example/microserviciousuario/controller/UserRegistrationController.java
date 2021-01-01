@@ -73,7 +73,7 @@ public class UserRegistrationController {
         
         userService.save(userDto);
         
-        //sending email
+        //sending email wih notification service
         Mail mail = new Mail();
         mail.setTo(userDto.getEmail());
         mail.setFrom("enmanuelcruzdejesus@gmail.com");

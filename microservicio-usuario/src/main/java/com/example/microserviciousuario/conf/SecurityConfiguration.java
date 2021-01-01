@@ -4,6 +4,7 @@ import com.example.microserviciousuario.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
@@ -25,8 +26,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected  void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+                .antMatchers(HttpMethod.POST,"/processPaymentPaypal/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/payments/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/payment**").permitAll()
+                .antMatchers(HttpMethod.GET,   "/addToCart/**").permitAll()
                 .antMatchers(
                         "/registration**",
+                        "/paymentForm**",
+                        "/payment**",
                         "/js/**",
                         "/css/**",
                         "/img/**",
@@ -43,6 +50,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login?logout")
                 .permitAll();
+
+                http.csrf().disable();
 
     }
 

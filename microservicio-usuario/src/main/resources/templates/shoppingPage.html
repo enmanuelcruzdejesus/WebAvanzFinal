@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template.html::head">
+    <title th:text="${titulo}">Ejemplo Paypal</title>
+</head>
+<body>
+<div class="container">
+    <div class="jumbotron">
+        <h1>Demostración PayPal</h1>
+        <p>
+            Permite demostrar la integración de Paypal en nuestros proyecto de una manera sencilla.
+            En este punto permitimos realizar las siguientes tareas:
+        <dl>
+            <dt>1) Formulario de compra</dt>
+            <dd>
+                Utilizando las variables HTML permite integrar nuestro formulario con Paypal.
+                Una vez realizado el pago Paypal nos retorna vía llamada POST los valores de la transacción
+                procesada.
+            </dd>
+
+            <dt>2) Listado de Compras</dt>
+            <dd>
+                Podemos visualizar todas las transacciones realizadas.
+            </dd>
+        </dl>
+        </p>
+        <p>
+            Es necesario crear un usuario de tipo Negocio y Personal para ser utilizando en www.sandbox.paypal.com
+        </p>
+        <p>
+            <a class="btn btn-primary btn-lg" role="button" th:href="paymentForm" >Ir al formulario Compra</a>
+            <a class="btn btn-success btn-lg" role="button" th:href="payments" >Listado de Compras</a>
+            <a class="btn btn-info btn-lg" role="button" href="https://developer.paypal.com" target="_blank">Paypal Developer</a>
+            <a class="btn btn-info btn-lg" role="button" href="https://developer.paypal.com/webapps/developer/docs/classic/paypal-payments-standard/integration-guide/formbasics/" target="_blank">Integración Formulario</a>
+            <a class="btn btn-info btn-lg" role="button" href="https://developer.paypal.com/webapps/developer/docs/classic/paypal-payments-standard/integration-guide/Appx_websitestandard_htmlvariables/" target="_blank">Variables del Formulario</a>
+        </p>
+    </div>
+
+    <div class="shopping-cart">
+        <!-- Title -->
+        <div class="title">
+            Shopping Bag
+        </div>
+
+        <!-- Product #1 -->
+        <div class="item">
+            <div class="buttons">
+                <span class="delete-btn"></span>
+                <span class="like-btn"></span>
+            </div>
+
+            <div class="image">
+                <img src="item-1.png" alt="" />
+            </div>
+
+            <div class="description">
+                <span>Common Projects</span>
+                <span>Bball High</span>
+                <span>White</span>
+            </div>
+
+            <div class="quantity">
+                <button class="plus-btn" type="button" name="button">
+                    <img src="plus.svg" alt="" />
+                </button>
+                <input type="text" name="name" value="1">
+                <button class="minus-btn" type="button" name="button">
+                    <img src="minus.svg" alt="" />
+                </button>
+            </div>
+
+            <div class="total-price">$549</div>
+        </div>
+
+        <!-- Product #2 -->
+        <div class="item">
+            <div class="buttons">
+                <span class="delete-btn"></span>
+                <span class="like-btn"></span>
+            </div>
+
+            <div class="image">
+                <img src="item-2.png" alt=""/>
+            </div>
+
+            <div class="description">
+                <span>Maison Margiela</span>
+                <span>Future Sneakers</span>
+                <span>White</span>
+            </div>
+
+            <div class="quantity">
+                <button class="plus-btn" type="button" name="button">
+                    <img src="plus.svg" alt="" />
+                </button>
+                <input type="text" name="name" value="1">
+                <button class="minus-btn" type="button" name="button">
+                    <img src="minus.svg" alt="" />
+                </button>
+            </div>
+
+            <div class="total-price">$870</div>
+        </div>
+
+        <!-- Product #3 -->
+        <div class="item">
+            <div class="buttons">
+                <span class="delete-btn"></span>
+                <span class="like-btn"></span>
+            </div>
+
+            <div class="image">
+                <img src="item-3.png" alt="" />
+            </div>
+
+            <div class="description">
+                <span>Our Legacy</span>
+                <span>Brushed Scarf</span>
+                <span>Brown</span>
+            </div>
+
+            <div class="quantity">
+                <button class="plus-btn" type="button" name="button">
+                    <img src="plus.svg" alt="" />
+                </button>
+                <input type="text" name="name" value="1">
+                <button class="minus-btn" type="button" name="button">
+                    <img src="minus.svg" alt="" />
+                </button>
+            </div>
+
+            <div class="total-price">$349</div>
+        </div>
+    </div>
+
+    <!-- incluyendo la parte de javascript del template. -->
+    <div th:replace="template.html::javascript">
+
+    </div>
+
+
+</div>
+</body>
+</html>
