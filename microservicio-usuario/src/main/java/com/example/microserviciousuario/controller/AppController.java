@@ -11,6 +11,7 @@ import com.example.microserviciousuario.service.PaymentService;
 import com.example.microserviciousuario.service.ProductService;
 import com.example.microserviciousuario.service.UserService;
 import com.example.microserviciousuario.service.WorkSolicitudeService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.discovery.converters.Auto;
 import io.micrometer.core.instrument.util.IOUtils;
@@ -23,6 +24,7 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.hibernate.jdbc.Work;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -46,6 +48,8 @@ public class AppController {
 
     List<Product> cartItems =new ArrayList<>();
 
+    List<String> workStatus = new ArrayList<>();
+
     Payment currentPayment = new Payment();
 
     @Autowired
@@ -65,6 +69,11 @@ public class AppController {
 
     @Value("${server.port}")
     private int puerto;
+
+    public AppController(){
+        this.workStatus.add("In Progress");
+        this.workStatus.add("Completed");
+    }
 
     @GetMapping("/")
     public String index(Model model){
@@ -179,6 +188,20 @@ public class AppController {
         return "workSolicitudes";
     }
 
+    @GetMapping("/workSolicitudesDetail/{id}")
+    public String getWorkById(@PathVariable("id") String id,Model model) throws JsonProcessingException {
+
+
+        WorkSolicitude work = workSolicitudeService.getById(id);
+        List<User> employees = getEmps();
+        model.addAttribute("work",work);
+        model.addAttribute("employees",employees);
+        model.addAttribute("status",workStatus);
+
+        return "workSolicitudesDetail";
+
+    }
+
 
     @GetMapping("/login")
     public String login(Model model) {
@@ -198,6 +221,12 @@ public class AppController {
 
     @GetMapping("/getEmployees")
     public ResponseEntity<List<User>> getEmployees() {
+        List<User> employees = getEmps();
+        return new ResponseEntity<List<User>>(employees,HttpStatus.OK);
+    }
+
+
+    private List<User> getEmps(){
         List<User> result = new ArrayList<User>();
         List<User> users = this.userService.getAll();
 
@@ -211,12 +240,9 @@ public class AppController {
 
 
         }
+        return result;
 
-
-
-        return new ResponseEntity<List<User>>(result,HttpStatus.OK);
     }
-
 
 
     void clean(){

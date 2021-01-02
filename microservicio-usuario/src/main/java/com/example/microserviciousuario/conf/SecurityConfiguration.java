@@ -33,6 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,   "/logout/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/getEmployees/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/workSolicitudes/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/workSolicitudesDetail/**").permitAll()
                 .antMatchers(
                         "/registration**",
                         "/js/**",

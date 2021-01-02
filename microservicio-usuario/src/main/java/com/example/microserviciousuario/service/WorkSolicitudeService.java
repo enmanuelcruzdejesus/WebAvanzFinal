@@ -1,6 +1,7 @@
 package com.example.microserviciousuario.service;
 
 import com.example.microserviciousuario.entity.WorkSolicitude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,14 @@ public class WorkSolicitudeService {
     @Autowired
     RestClientService restService;
     
+    public WorkSolicitude getById(String id) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        WorkSolicitude work = mapper.readValue(this.restService.get("/getWorkSolicitudes/"+id), new TypeReference<WorkSolicitude>(){});
+        return work;
+    }
     public List<WorkSolicitude> getAll() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        List<WorkSolicitude> payments = mapper.readValue(this.restService.get("/getWorkSolicitudes"), new TypeReference<List<WorkSolicitude>>(){});
-        return payments;
+        List<WorkSolicitude> workSolicitudes = mapper.readValue(this.restService.get("/getWorkSolicitudes"), new TypeReference<List<WorkSolicitude>>(){});
+        return workSolicitudes;
     }
 }
