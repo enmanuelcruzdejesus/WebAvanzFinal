@@ -32,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 import sun.nio.cs.UTF_32;
 
 import java.io.File;
@@ -132,10 +133,15 @@ public class ComprasController {
 
 
 
-
-
         return "redirect:/orderList";
     }
+
+    @GetMapping("/redirectDemo")
+    public RedirectView redirectDemo(){
+        return new RedirectView("http://localhost:8080/microservicio-usuario/payments");
+    }
+
+
 
     @GetMapping("/orderList")
     public String orderList(Model model){
@@ -151,6 +157,7 @@ public class ComprasController {
          return "reportHtml";
 
     }
+
 
 
 }

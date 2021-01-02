@@ -28,6 +28,8 @@ public class Payment {
     private BigDecimal shipping;
     private String status;
 
+    public Payment(){}
+
     public int getId() {
         return id;
     }
@@ -164,7 +166,7 @@ public class Payment {
         this.status = status;
     }
 
-    public Payment(){}
+    
 
 
 }

@@ -6,6 +6,8 @@ import java.io.Serializable;
 public class Mail implements Serializable {
     private String to;
     private String from;
+    private String subject;
+    private String body;
 
     public String getTo() {
         return to;
@@ -39,7 +41,6 @@ public class Mail implements Serializable {
         this.body = body;
     }
 
-    private String subject;
-    private String body;
+  
 
 }
