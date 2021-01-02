@@ -163,6 +163,30 @@ public class AppController {
 
     }
 
+    @GetMapping(path="/getWorkSolicitudes/{id}")
+    public ResponseEntity<Object> getWorkSolicitudes(@PathVariable("id") String id){
+
+        Integer i  = Integer.parseInt(id);
+        WorkSolicitude w  = this.workSolicitudeService.getById(i).get();
+
+        if(w == null)
+            return new ResponseEntity<Object>("no work solicitude with "+id,HttpStatus.NO_CONTENT);
+
+        return new ResponseEntity<Object>(w,HttpStatus.OK);
+
+    }
+
+    @PostMapping(path="/postWorkSolicitude")
+    public ResponseEntity<Object> postWorkSolicitude(@RequestBody WorkSolicitude work){
+
+        if(work==null)
+            return new ResponseEntity<Object>("work is null",HttpStatus.INTERNAL_SERVER_ERROR);
+
+        WorkSolicitude w  = this.workSolicitudeService.save(work);
+
+        return new ResponseEntity<Object>(w,HttpStatus.OK);
+    }
+
 
     @GetMapping(path="/getOrders")
     public ResponseEntity<List<Order>> getOrders(){
