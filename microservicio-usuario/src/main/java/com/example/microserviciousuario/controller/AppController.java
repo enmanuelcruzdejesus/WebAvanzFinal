@@ -1,12 +1,16 @@
 package com.example.microserviciousuario.controller;
 
+import com.example.microserviciousuario.entity.Role;
+import com.example.microserviciousuario.entity.User;
 import com.example.microserviciousuario.entity.AppSetting;
 import com.example.microserviciousuario.entity.Payment;
 import com.example.microserviciousuario.entity.Product;
+import com.example.microserviciousuario.entity.WorkSolicitude;
 import com.example.microserviciousuario.service.AppSettingService;
 import com.example.microserviciousuario.service.PaymentService;
 import com.example.microserviciousuario.service.ProductService;
 import com.example.microserviciousuario.service.UserService;
+import com.example.microserviciousuario.service.WorkSolicitudeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.discovery.converters.Auto;
 import io.micrometer.core.instrument.util.IOUtils;
@@ -31,10 +35,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 
@@ -59,14 +60,20 @@ public class AppController {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    WorkSolicitudeService workSolicitudeService;
+
     @Value("${server.port}")
     private int puerto;
 
     @GetMapping("/")
     public String index(Model model){
-
+        String role = this.userService.getCurrentUser().getRole();
+        System.out.println("ROLE USER === "+role);
+        model.addAttribute("role",role);
         List<Product> products = this.productService.getAll();
         model.addAttribute("products",products);
+
         return "index";
 
     }
@@ -89,11 +96,14 @@ public class AppController {
 
     @GetMapping(path = "/paymentForm")
     public String formularioPago(Model model){
+        String role = this.userService.getCurrentUser().getRole();
+        System.out.println("ROLE USER === "+role);
+        model.addAttribute("role",role);
 
         String item_name = "";
         for(int i =0; i < this.cartItems.size(); i++){
             Product item = this.cartItems.get(i);
-            if(i >0)
+            if(i > 0)
               item_name = item_name+","+item.getProductName();
             else
                 item_name = item.getProductName();
@@ -144,6 +154,9 @@ public class AppController {
 
     @GetMapping("/payments")
     public String orderList(Model model) throws IOException {
+        String role = this.userService.getCurrentUser().getRole();
+        System.out.println("ROLE USER === "+role);
+        model.addAttribute("role",role);
 
         List<Payment> payments = paymentService.getPayments(this.userService.getCurrentUser().getEmail());
         model.addAttribute("payments", payments);
@@ -154,6 +167,18 @@ public class AppController {
     public String shoppingPage(){
         return "shoppingPage";
     }
+
+    @GetMapping("/workSolicitudes")
+    public String getWorks(Model model) throws IOException {
+        String role = this.userService.getCurrentUser().getRole();
+        System.out.println("ROLE USER === "+role);
+        model.addAttribute("role",role);
+
+        List<WorkSolicitude> works =   this.workSolicitudeService.getAll();
+        model.addAttribute("works",works);
+        return "workSolicitudes";
+    }
+
 
     @GetMapping("/login")
     public String login(Model model) {
@@ -170,6 +195,28 @@ public class AppController {
     public String userIndex() {
         return "user/index";
     }
+
+    @GetMapping("/getEmployees")
+    public ResponseEntity<List<User>> getEmployees() {
+        List<User> result = new ArrayList<User>();
+        List<User> users = this.userService.getAll();
+
+        for(int i  =0; i < users.size(); i++){
+            User u  = users.get(i);
+            Collection<Role> roles = u.getRoles();
+            for(Role role : roles){
+                if(role.getId() == 4)
+                    result.add(u);
+            }
+
+
+        }
+
+
+
+        return new ResponseEntity<List<User>>(result,HttpStatus.OK);
+    }
+
 
 
     void clean(){

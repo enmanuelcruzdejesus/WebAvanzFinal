@@ -1,15 +1,18 @@
 package com.example.microserviciousuario.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
 @Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
 
     @Column(name = "first_name")
     private String firstName;
@@ -26,6 +29,7 @@ public class User {
                     name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"))
+    @JsonIgnore
     private Collection<Role> roles;
 
 
@@ -87,7 +91,12 @@ public class User {
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
-
+    
+    public String getRole(){
+        ArrayList<Role> r = new ArrayList<Role>(roles);
+        Role role =  (Role)r.get(0);
+        return role.getName();
+    }
 
 
 

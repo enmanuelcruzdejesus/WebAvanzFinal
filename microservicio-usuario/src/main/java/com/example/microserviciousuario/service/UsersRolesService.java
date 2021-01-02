@@ -15,8 +15,7 @@ public class UsersRolesService {
     public List<UsersRoles> getAll(){
         return  repo.findAll();
     }
-
-
+    
     public UsersRoles save(UsersRoles p){
 
         return repo.save(p);

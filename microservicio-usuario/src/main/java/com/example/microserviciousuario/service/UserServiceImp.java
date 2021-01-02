@@ -14,12 +14,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImp  implements  UserService{
 
     User currentUser;
+    UserRegistrationDto userDto;
+    
     
     @Autowired
     UserRepo repo;
@@ -39,9 +42,12 @@ public class UserServiceImp  implements  UserService{
     }
     
     public User getCurrentUser(){return this.currentUser;}
+    
+    public List<User> getAll(){return this.repo.findAll();}
 
     @Override
     public User save(UserRegistrationDto entity) {
+     
         User user = new User();
         user.setFirstName(entity.getFirstName());
         user.setLastName(entity.getLastName());
@@ -69,6 +75,10 @@ public class UserServiceImp  implements  UserService{
         return user;
 
     }
+    
+    public UserRegistrationDto getUserDto(){
+        return this.userDto;
+    }
 
     public User findByEmail(String email){
         return this.repo.findByEmail(email);
@@ -81,7 +91,7 @@ public class UserServiceImp  implements  UserService{
         if (user == null){
             throw new UsernameNotFoundException("Invalid username or password.");
         }
-        
+       
         this.currentUser = user;
         return new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(),
                 mapRolesToAuthorities(user.getRoles()));
