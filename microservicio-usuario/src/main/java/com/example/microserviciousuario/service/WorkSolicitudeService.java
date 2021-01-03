@@ -1,5 +1,6 @@
 package com.example.microserviciousuario.service;
 
+import com.example.microserviciousuario.entity.WorkByStatus;
 import com.example.microserviciousuario.entity.WorkSolicitude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -26,6 +27,13 @@ public class WorkSolicitudeService {
         return workSolicitudes;
     }
 
+    public List<WorkByStatus> getWorkByStatus() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        List<WorkByStatus> work = mapper.readValue(this.restService.get("/getWorkByStatus"), new TypeReference<List<WorkByStatus>>(){});
+        return work;
+
+    }
+
     public String postWorkSolicitude(WorkSolicitude work) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(work);
@@ -33,4 +41,5 @@ public class WorkSolicitudeService {
         System.out.println(result);
         return result;
     }
+
 }

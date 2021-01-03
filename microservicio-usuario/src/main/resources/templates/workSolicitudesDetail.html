@@ -53,10 +53,15 @@
 
                 <div class="form-group">
                     <label for="employee_asig" class="control-label">Employee</label>
-                    <select id="employee_asig" name="employee_asig" class="form-control col-md-5" th:field="*{employee_asig}" required autofocus="autofocus">
+                    <select id="employee_asig" name="employee_asig" class="form-control col-md-5" th:field="*{employee_asig}"  autofocus="autofocus">
                         <!--                        <option value="ADMIN" selected>ADMIN</option>-->
                         <option  th:each="employee :${employees}" th:value="${employee.email}" th:text="${employee.email}" ></option>
                     </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="total" class="control-label">Total</label>
+                    <input id="total" class="form-control" th:field="*{total}"    />
                 </div>
 
 

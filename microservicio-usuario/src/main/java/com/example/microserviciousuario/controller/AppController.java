@@ -5,6 +5,7 @@ import com.example.microserviciousuario.entity.User;
 import com.example.microserviciousuario.entity.AppSetting;
 import com.example.microserviciousuario.entity.Payment;
 import com.example.microserviciousuario.entity.Product;
+import com.example.microserviciousuario.entity.WorkByStatus;
 import com.example.microserviciousuario.entity.WorkSolicitude;
 import com.example.microserviciousuario.service.AppSettingService;
 import com.example.microserviciousuario.service.PaymentService;
@@ -214,6 +215,12 @@ public class AppController {
         return "workSolicitudesDetail";
 
     }
+    @GetMapping("/getWorkByStatus")
+    public ResponseEntity<List<WorkByStatus>> getWorkByStatus() throws JsonProcessingException {
+        List<WorkByStatus> work = this.workSolicitudeService.getWorkByStatus();
+        return new ResponseEntity<List<WorkByStatus>>(work,HttpStatus.OK);
+
+    }
 
 
     @GetMapping("/login")
@@ -236,6 +243,11 @@ public class AppController {
     public ResponseEntity<List<User>> getEmployees() {
         List<User> employees = getEmps();
         return new ResponseEntity<List<User>>(employees,HttpStatus.OK);
+    }
+
+    @GetMapping(path="/charts")
+    public String getCharts(){
+        return "charts";
     }
 
 
