@@ -3,8 +3,8 @@
 $('.toast').toast(option)
 
 function shoppingClickHandler(obj){
-    var work = obj.id;
-    var Url = "http://localhost:8080/microservicio-usuario/workSolicitudesDetail/"+work;
+    var productId = obj.id;
+    var Url = "http://localhost:8080/microservicio-usuario/addToCart/"+productId;
 
 
    $.ajax({
@@ -23,7 +23,7 @@ function shoppingClickHandler(obj){
      type: 'GET'
    });
 
-  // alert("Paquete agregado al carrito");
+   alert("Paquete agregado al carrito");
 
 //   $('#element').toast('show')
 

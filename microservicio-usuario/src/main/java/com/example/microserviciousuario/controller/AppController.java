@@ -31,9 +31,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -158,8 +160,19 @@ public class AppController {
         //cleaning shopping cart
         this.clean();
 
+        //return "redirect:/payments";
         return new RedirectView("http://localhost:8080/microservicio-usuario/payments");
     }
+
+    @PostMapping(path="/postWorkSolicitude")
+    public String postWorkSolicitude(@ModelAttribute("work") @Valid WorkSolicitude work, BindingResult result ) throws JsonProcessingException {
+
+       String response =  this.workSolicitudeService.postWorkSolicitude(work);
+       return "redirect:/workSolicitudes";
+
+    }
+
+
 
     @GetMapping("/payments")
     public String orderList(Model model) throws IOException {

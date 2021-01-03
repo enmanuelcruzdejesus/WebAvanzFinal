@@ -25,4 +25,12 @@ public class WorkSolicitudeService {
         List<WorkSolicitude> workSolicitudes = mapper.readValue(this.restService.get("/getWorkSolicitudes"), new TypeReference<List<WorkSolicitude>>(){});
         return workSolicitudes;
     }
+
+    public String postWorkSolicitude(WorkSolicitude work) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(work);
+        String result = restService.post("/postWorkSolicitude",json);
+        System.out.println(result);
+        return result;
+    }
 }
