@@ -1,10 +1,6 @@
 package com.example.microserviciocompras.controller;
 
-import com.example.microserviciocompras.entity.Mail;
-import com.example.microserviciocompras.entity.Order;
-import com.example.microserviciocompras.entity.Payment;
-import com.example.microserviciocompras.entity.User;
-import com.example.microserviciocompras.entity.WorkSolicitude;
+import com.example.microserviciocompras.entity.*;
 import com.example.microserviciocompras.service.*;
 import com.example.microserviciocompras.service.PaymentService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -43,8 +39,7 @@ public class AppController {
     @Autowired
     PaymentService paymentService;
 
-    @Autowired
-    OrderService orderService;
+
 
     @Autowired
     WorkSolicitudeService workSolicitudeService;
@@ -142,7 +137,8 @@ public class AppController {
 
     @GetMapping(path ="/getPaymentSeq")
     public ResponseEntity<Integer> getPaymentSequence(){
-        Integer i  = this.paymentService.getAll().size()+1;
+     
+        Integer i  = this.paymentService.getAll().size()+100;
         return new ResponseEntity<Integer>(i,HttpStatus.OK);
     }
 
@@ -184,14 +180,18 @@ public class AppController {
 
         WorkSolicitude w  = this.workSolicitudeService.save(work);
 
+        System.out.println("POSTING WORK SOLICITUDE !!");
+
         return new ResponseEntity<Object>(w,HttpStatus.OK);
     }
-
-
-    @GetMapping(path="/getOrders")
-    public ResponseEntity<List<Order>> getOrders(){
-
-        return new ResponseEntity<List<Order>>(this.orderService.getAll(),HttpStatus.OK);
-
+    
+    
+    
+    @GetMapping(path="/getWorkByStatus")
+    public ResponseEntity<List<WorkByStatus>> getWorkByStatus(){
+        return new ResponseEntity<List<WorkByStatus>>(this.workSolicitudeService.findStatusCount(),HttpStatus.OK);
     }
+    
+
+
 }

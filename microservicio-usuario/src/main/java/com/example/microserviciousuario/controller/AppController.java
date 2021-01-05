@@ -2,12 +2,15 @@ package com.example.microserviciousuario.controller;
 
 import com.example.microserviciousuario.entity.Role;
 import com.example.microserviciousuario.entity.User;
+import com.example.microserviciousuario.entity.Mail;
 import com.example.microserviciousuario.entity.AppSetting;
 import com.example.microserviciousuario.entity.Payment;
 import com.example.microserviciousuario.entity.Product;
+import com.example.microserviciousuario.entity.UserDto;
 import com.example.microserviciousuario.entity.WorkByStatus;
 import com.example.microserviciousuario.entity.WorkSolicitude;
 import com.example.microserviciousuario.service.AppSettingService;
+import com.example.microserviciousuario.service.NotificationService;
 import com.example.microserviciousuario.service.PaymentService;
 import com.example.microserviciousuario.service.ProductService;
 import com.example.microserviciousuario.service.UserService;
@@ -15,6 +18,7 @@ import com.example.microserviciousuario.service.WorkSolicitudeService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.discovery.converters.Auto;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import io.micrometer.core.instrument.util.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -36,6 +40,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
@@ -69,6 +74,9 @@ public class AppController {
 
     @Autowired
     WorkSolicitudeService workSolicitudeService;
+    
+    @Autowired
+    NotificationService notificationService;
 
     @Value("${server.port}")
     private int puerto;
@@ -79,12 +87,13 @@ public class AppController {
     }
 
     @GetMapping("/")
-    public String index(Model model){
+    public String index( Model model){
         String role = this.userService.getCurrentUser().getRole();
         System.out.println("ROLE USER === "+role);
         model.addAttribute("role",role);
         List<Product> products = this.productService.getAll();
         model.addAttribute("products",products);
+
 
         return "index";
 
@@ -131,7 +140,7 @@ public class AppController {
     }
 
     @PostMapping(path = "/processPaymentPaypal")
-    public RedirectView processPaymentPaypal(Model model, @RequestParam Map<String,String> params) throws IOException {
+    public String processPaymentPaypal(Model model, @RequestParam Map<String,String> params) throws IOException {
         Payment payment = new Payment();
         payment.setInvoice_id(params.get("invoice"));
         payment.setTransaction_id(params.get("txn_id"));
@@ -161,14 +170,22 @@ public class AppController {
         //cleaning shopping cart
         this.clean();
 
-        //return "redirect:/payments";
-        return new RedirectView("http://localhost:8080/microservicio-usuario/payments");
+        return "redirect:/payments";
+       // return new RedirectView("http://localhost:8080/microservicio-usuario/payments");
     }
 
     @PostMapping(path="/postWorkSolicitude")
-    public String postWorkSolicitude(@ModelAttribute("work") @Valid WorkSolicitude work, BindingResult result ) throws JsonProcessingException {
+    public String postWorkSolicitude(@ModelAttribute("work") @Valid WorkSolicitude work, BindingResult result ) throws IOException {
 
        String response =  this.workSolicitudeService.postWorkSolicitude(work);
+       Mail m  = new Mail();
+        m.setTo(work.getCustomer_email());
+        m.setFrom("enmanuelcruzdejesus@gmail.com");
+        m.setSubject("The order has been changed");
+        m.setBody("Employee assigned = "+work.getEmployee_asig()+" status = "+work.getStatus());
+      //  String r = this.notificationService.sentMail(m);
+        //System.out.println(r);
+       
        return "redirect:/workSolicitudes";
 
     }
@@ -221,10 +238,29 @@ public class AppController {
         return new ResponseEntity<List<WorkByStatus>>(work,HttpStatus.OK);
 
     }
+    
+//    @GetMapping(path = "/getUsers")
+//    public String getUsers(Model model){
+//        List<User> users = this.userService.getAll();
+//        List<UserDto>userDtos = new ArrayList<>();
+//        for(int i= 0; i < users.size(); i++){
+//            
+//            User x = users.get(i);
+//            UserDto u  = new UserDto();
+//            u.setUser(x);
+//            u.setRole(x.getRole());
+//            userDtos.add(u);
+//        }
+//        
+//        model.addAttribute("users",userDtos);
+//        return "users";
+//    }
 
 
     @GetMapping("/login")
-    public String login(Model model) {
+    public String login(HttpServletRequest request, Model model) {
+
+        model.addAttribute("port", request.getLocalPort());
         return "login";
     }
 
@@ -249,7 +285,6 @@ public class AppController {
     public String getCharts(){
         return "charts";
     }
-
 
     private List<User> getEmps(){
         List<User> result = new ArrayList<User>();

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Users</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</head>
+<body class="container">
+<h2>Users</h2>
+<table class="table table-hover">
+    <div th:replace="index.html::navmenu">
+
+    </div>
+
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>FirstName</th>
+        <th>LastName</th>
+        <th>Email</th>
+        <th>Role</th>
+<!--        <th></th>-->
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}" >
+        <td th:text="${user.user.id}">id</td>
+        <td th:text="${user.user.firstName}" >fistName</td>
+        <td th:text="${user.user.lastName}">lastName</td>
+        <!--        <td th:text="${work.employee_asig}">employee_asig</td>-->
+        <td th:text="${user.user.email}">email</td>
+        <td th:text="${user.role}">role</td>
+<!--        <td  th:id="${work.id}" th:onclick="goToWorkDetail(this);" >Ver detalle</td>-->
+    </tr>
+    </tbody>
+</table>
+
+<!--&lt;!&ndash; incluyendo la parte de javascript del template.        &ndash;&gt;-->
+
+<!--<script type="text/javascript">-->
+
+<!--        function goToWorkDetail(obj){-->
+<!--           console.log(obj);-->
+<!--           var workId = obj.id;-->
+<!--           var Url = "http://localhost:8080/microservicio-usuario/workSolicitudesDetail/"+workId;-->
+<!--            window.location.href = Url;-->
+<!--          }-->
+
+<!--    </script>-->
+
+</body>
+</html>

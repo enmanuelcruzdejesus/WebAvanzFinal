@@ -37,6 +37,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/workSolicitudesDetail/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/charts/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/getWorkByStatus/**").permitAll()
+//                .antMatchers(HttpMethod.GET, "/getUsers/**").permitAll()
                 .antMatchers(
                         "/registration**",
                         "/js/**",
@@ -62,7 +63,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/postWorkSolicitude");
+        web.ignoring().antMatchers("/postWorkSolicitude","/processPaymentPaypal");
     }
 
     @Bean

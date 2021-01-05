@@ -2,6 +2,7 @@ package com.example.microserviciocompras.service;
 
 
 import com.example.microserviciocompras.entity.Payment;
+import com.example.microserviciocompras.entity.WorkByStatus;
 import com.example.microserviciocompras.entity.WorkSolicitude;
 import com.example.microserviciocompras.repo.PaymentRepo;
 import com.example.microserviciocompras.repo.WorkSolicitudeRepo;
@@ -22,7 +23,9 @@ public class WorkSolicitudeService {
         return  repo.findAll();
     }
     
-
+    public List<WorkByStatus> findStatusCount(){
+        return this.repo.findStatusCount();
+    }
 
     public Optional<WorkSolicitude> getById(Integer id){
         return repo.findById(id);

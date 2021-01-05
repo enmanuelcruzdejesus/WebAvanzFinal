@@ -44,7 +44,7 @@
 
 
                 <li class="nav-item">
-                    <a class="nav-link" th:if="${role} == 'ADMIN_ROLE'" >Manage Users <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" th:if="${role} == 'ADMIN_ROLE'" href="http://localhost:8080/microservicio-usuario/getUsers">Manage Users <span class="sr-only">(current)</span></a>
                 </li>
 
                 <li class="nav-item">
@@ -95,6 +95,7 @@
 
         </div>
     </div>
+
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>

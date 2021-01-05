@@ -20,6 +20,7 @@ public class User implements Serializable {
     private String lastName;
     private String email;
     private String password;
+    
 
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -31,6 +32,7 @@ public class User implements Serializable {
                     name = "role_id", referencedColumnName = "id"))
     @JsonIgnore
     private Collection<Role> roles;
+
 
 
     public User(){}
@@ -95,8 +97,11 @@ public class User implements Serializable {
     public String getRole(){
         ArrayList<Role> r = new ArrayList<Role>(roles);
         Role role =  (Role)r.get(0);
+     
         return role.getName();
     }
+    
+    
 
 
 
